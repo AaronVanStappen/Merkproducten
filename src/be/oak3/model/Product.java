@@ -5,17 +5,19 @@ import java.util.Comparator;
 
 public abstract class Product implements Comparator<Product>, Comparable<Product>{
     int productNummer;
-    String merk;
+    public static int productNr = 1000;
+    public String merk;
     String naam;
     int volume;
     double prijs;
 
-    public Product(int productNr, String merk, String naam, int volume, double prijs) {
-        productNummer = productNr;
+    public Product(int productNummer, String merk, String naam, int volume, double prijs) {
+        this.productNummer = productNr;
         this.merk = merk;
         this.naam = naam;
         this.volume = volume;
         this.prijs = prijs;
+        this.productNr++;
     }
 
     public int getProductNummer() {
@@ -34,6 +36,10 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
         return volume;
     }
 
+    public double getPrijs() {
+        return prijs;
+    }
+
     public String getProductCode() {
         StringBuilder code = new StringBuilder();
         code.append(getMerk().toUpperCase().replace(' ', '_').substring(0,3))
@@ -46,7 +52,6 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
         }*/
         return code.toString();
     }
-
 
     public static Comparator<Product> sorteerOpMerknaam() {
         return Comparator.comparing(Product::getMerk);
@@ -85,7 +90,7 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
             return productNummer + " " +
             "Merk: " + merk + "\t" +
             "Naam: " + naam + "\t" +
-            "Volume: " + volume + "\t" +
+            "Volume: " + volume +"ml" + "\t" +
             "Prijs: " + formatter.format(prijs).toString() + "\t" +
             "Code: " + getProductCode().toString() + "\t";
     }
