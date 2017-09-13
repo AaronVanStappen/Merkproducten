@@ -8,4 +8,9 @@ public class Deodorant extends Product {
         super(productNr, merk, naam, volume, prijs);
         this.soort = soort;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\t" + soort.toString();
+    }
 }
