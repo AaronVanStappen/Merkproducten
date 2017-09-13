@@ -1,6 +1,6 @@
 package be.oak3.model;
 
-import java.text.Format;
+import java.text.NumberFormat;
 import java.util.Comparator;
 
 public abstract class Product implements Comparator<Product>, Comparable<Product>{
@@ -48,10 +48,9 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
     }
 
 
-    public static Comparator<Product> sorteerOpMerknaam(Product p1, Product p2) {
-        Comparator<Product> c = new Comparator;
-        c.compare(p1,p2);
-        return c;
+    public static Comparator<Product> sorteerOpMerknaam() {
+        return Comparator.comparing(Product::getMerk);
+        //return (p1, p2) -> p1.getMerk().compareTo(p2.getMerk());
     }
 
     @Override
@@ -81,13 +80,13 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
 
     @Override
     public String toString() {
-        Format formatter;
-        formatter.
-        return productNummer + " " +
-                "Merk: " + merk + "\t" +
-                "Naam: " + naam + "\t" +
-                "Volume: " + volume + "\t" +
-                "Prijs: " + prijs + "\t" +
-                "Code: " + getProductCode().toString() + "\t";
+        NumberFormat formatter = NumberFormat.getNumberInstance();
+        formatter.setMaximumFractionDigits(2);
+            return productNummer + " " +
+            "Merk: " + merk + "\t" +
+            "Naam: " + naam + "\t" +
+            "Volume: " + volume + "\t" +
+            "Prijs: " + formatter.format(prijs).toString() + "\t" +
+            "Code: " + getProductCode().toString() + "\t";
     }
 }
