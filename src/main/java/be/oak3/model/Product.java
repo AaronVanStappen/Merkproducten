@@ -3,12 +3,12 @@ package be.oak3.model;
 import java.util.Comparator;
 
 public abstract class Product implements Comparator<Product>, Comparable<Product>{
-    int productNummer;
-    public static int productNr = 1000;
-    public String merk;
-    String naam;
-    int volume;
-    double prijs;
+    private int productNummer;
+    private static int productNr = 1000;
+    private String merk;
+    private String naam;
+    private int volume;
+    private double prijs;
 
     public Product(int productNummer, String merk, String naam, int volume, double prijs) {
         this.productNummer = productNr;
@@ -80,6 +80,6 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
     public String toString() {
         return String.format("%d %s %-20s %10s %-24s %10s %3sml %8s %4.2f %5s %s",
                 getProductNummer(), "Merk:", getMerk(), "Naam:", getNaam(), "Volume:", getVolume(),
-                "Prijs:", getPrijs(), " Code:", getProductCode());
+                "Prijs:", getPrijs(), "Code:", getProductCode());
     }
 }
