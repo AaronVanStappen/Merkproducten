@@ -2,9 +2,10 @@ package be.oak3.model;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public abstract class Product implements Comparator<Product>, Comparable<Product>{
+public abstract class Product implements Comparator<Product>, Comparable<Product>, Serializable {
     private int productNummer;
     private static int productNr = 1000;
     private String merk;

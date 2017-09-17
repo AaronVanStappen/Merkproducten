@@ -5,13 +5,15 @@ import be.oak3.model.Deodorant;
 import be.oak3.model.Parfum;
 import be.oak3.model.Product;
 
+
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class Data {
-	private static Product[] artikels = {
+	public static ArrayList<Product> artikels = Lists.newArrayList(
 			new Parfum(0, "Dolce & Gabbana", "Light Blue", 100, 66.72),
 			new Parfum(0, "BVLGARI", "BLV", 75, 61.52),
 			new Deodorant(0, "DKNY", "Be Delicious Women", 100, 33.65,
@@ -26,10 +28,10 @@ public class Data {
 			new Parfum(0, "Georgio Armani", "Code Donna", 30, 39.84),
 			new Parfum(0, "Georgio Armani", "Code Donna", 75, 76.00),
 			new Deodorant(0, "Cacharel", "Anais", 50, 24.50, Deodorant.DeoType.VAPO)
-	};
+	);
 
 	// Geeft de lijst als een ArrayList terug
 	public static List<Product> getData() {
-		return new ArrayList<Product>(Arrays.asList(artikels));
+		return  artikels;
 	}
 }
