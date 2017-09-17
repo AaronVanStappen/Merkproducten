@@ -46,7 +46,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>
-                                be.vdab.hello.App
+                                be.oak3.persistence.TestApp
                             </mainClass>
                         </manifest>
                     </archive>
