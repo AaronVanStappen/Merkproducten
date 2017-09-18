@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BestellingImpl implements Bestelling {
     public List<Product> bestelling = new ArrayList<>();
@@ -38,29 +39,41 @@ public class BestellingImpl implements Bestelling {
     }
 
     @Override
-    public void toonPerMerk(String merk) {
-        bestelling.stream().filter(product -> product.getMerk().equals(merk))
+    public List<Product> lijstVanBepaaldMerk(String merk) {
+        /*bestelling.stream().filter(product -> product.getMerk().equals(merk))
                   .sorted(Comparator.comparing(Product::getProductCode))
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
+
+        return bestelling.stream().filter(product ->product.getMerk().equals(merk))
+                         .sorted(Comparator.comparing(Product::getProductCode))
+                         .collect(Collectors.toList());
     }
 
    @Override
-    public void toonParfums() {
-        List<Product> parfums = new ArrayList<>();
+    public List<Product> lijstVanParfums() {
+        /*List<Product> parfums = new ArrayList<>();
         for (Product p : bestelling) {
             if (p instanceof Parfum) {
                 parfums.add(p);
             }
         }
        parfums.stream().sorted(Comparator.comparing(Product::getProductCode))
-              .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+              .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
+
+       return bestelling.stream().filter(p -> p instanceof Parfum)
+                 .sorted(Comparator.comparing(Product::getProductCode))
+                 .collect(Collectors.toList());
     }
 
     @Override
-    public void toonGoedkopeProducten() {
-        bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
+    public List<Product> lijstVanGoedkopeProducten() {
+        /*bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
                   .sorted(Comparator.comparing(Product::getProductCode))
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
+
+        return bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
+                         .sorted(Comparator.comparing(Product::getProductNummer))
+                         .collect(Collectors.toList());
     }
 
     @Override

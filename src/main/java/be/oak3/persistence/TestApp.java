@@ -27,14 +27,14 @@ public class TestApp {
         System.out.println("\nLijst gesorteerd op volume: ");
         bestelling.sorteerOpVolume();
 
-        System.out.println("\nVan het merk Georgio Armani:");
+        /*System.out.println("\nVan het merk Georgio Armani:");
         bestelling.toonPerMerk("Georgio Armani");
 
         System.out.println("\nAlle Parfums:");
         bestelling.toonParfums();
 
         System.out.println("\nAlle producten onder €50; ");
-        bestelling.toonGoedkopeProducten();
+        bestelling.toonGoedkopeProducten();*/
 
         Product product = bestelling.zoekDuursteProduct();
         System.out.println("\nDuurste product:\n" + product);
