@@ -44,7 +44,7 @@ public class BestellingImpl implements Bestelling {
                   .sorted(Comparator.comparing(Product::getProductCode))
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
 
-        return bestelling.stream().filter(product ->product.getMerk().equals(merk))
+        return bestelling.stream().filter(product -> product.getMerk().equals(merk))
                          .sorted(Comparator.comparing(Product::getProductCode))
                          .collect(Collectors.toList());
     }
