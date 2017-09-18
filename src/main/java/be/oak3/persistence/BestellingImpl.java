@@ -22,29 +22,23 @@ public class BestellingImpl implements Bestelling {
 
     @Override
     public void sorteer() {
-        //bestelling.stream().sorted().forEach(System.out::println);
         bestelling.stream().sorted().forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
     }
 
     @Override
     public void sorteerOpMerk() {
-        //bestelling.stream().sorted(Comparator.comparing(Product::getMerk)).forEach(System.out::println);
-        bestelling.stream().sorted(Comparator.comparing(Product::getMerk))
+        bestelling.stream().sorted(Product.sorteerOpMerknaam())
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
     }
 
     @Override
     public void sorteerOpVolume() {
-        /*bestelling.stream().sorted(Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode))
-                .forEach(System.out::println);*/
         bestelling.stream().sorted(Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode))
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
     }
 
     @Override
     public void toonPerMerk(String merk) {
-        /*bestelling.stream().filter(product -> product.getMerk().equals(merk))
-                .sorted(Comparator.comparing(Product::getProductCode)).forEach(System.out::println);*/
         bestelling.stream().filter(product -> product.getMerk().equals(merk))
                   .sorted(Comparator.comparing(Product::getProductCode))
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
@@ -58,15 +52,12 @@ public class BestellingImpl implements Bestelling {
                 parfums.add(p);
             }
         }
-        //parfums.stream().sorted(Comparator.comparing(Product::getProductCode)).forEach(System.out::println);
        parfums.stream().sorted(Comparator.comparing(Product::getProductCode))
               .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
     }
 
     @Override
     public void toonGoedkopeProducten() {
-        /*bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
-                .sorted(Comparator.comparing(Product::getProductCode)).forEach(System.out::println);*/
         bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
                   .sorted(Comparator.comparing(Product::getProductCode))
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
@@ -74,15 +65,11 @@ public class BestellingImpl implements Bestelling {
 
     @Override
     public Product zoekDuursteProduct() {
-        return bestelling.stream().max(Comparator.comparing(Product::getPrijs)).get();
+        return bestelling.stream().max(Comparator.comparing(Product::getPrijs)).orElseThrow(RuntimeException::new);
     }
 
     @Override
     public double totalePrijs() {
-        double totalePrijs = 0.00D;
-        for (Product p : bestelling) {
-            totalePrijs = totalePrijs +  p.getPrijs();
-        }
-        return totalePrijs;
+        return bestelling.stream().mapToDouble(Product::getPrijs).sum();
     }
 }
