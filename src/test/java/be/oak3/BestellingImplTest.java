@@ -46,10 +46,12 @@ public class BestellingImplTest {
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).isNotNull();
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).size().isEqualTo(3);
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).first().isInstanceOf(Product.class);
-        assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).isEqualTo(bestel2.lijstVanBepaaldMerk("Georgio Armani"));
+        assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani"))
+                .isEqualTo(bestel2.lijstVanBepaaldMerk("Georgio Armani"));
     }
 
     @Test
-    public void testSorteerOpMerk() {
+    public void testLijstVanGoedkopeProducten() {
+
     }
 }
