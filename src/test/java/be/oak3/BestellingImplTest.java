@@ -5,26 +5,14 @@ import be.oak3.model.Product;
 import be.oak3.persistence.Bestelling;
 import be.oak3.persistence.BestellingImpl;
 import be.oak3.persistence.Data;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
 import static org.assertj.core.api.Assertions.*;
-
 import java.util.*;
 
-import static java.util.List.*;
-
-import java.util.stream.*;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import static java.util.stream.Stream.*;
-
-
 public class BestellingImplTest {
-    Bestelling bestelling;
-    Bestelling bestel2;
+    private Bestelling bestelling;
+    private Bestelling bestel2;
 
     @Before
     public void init() {
