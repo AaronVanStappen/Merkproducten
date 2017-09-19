@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BestellingImpl implements Bestelling {
-    public static List<Product> bestelling = new ArrayList<>();
+    public List<Product> bestelling = new ArrayList<>();
     public BestellingImpl() { }
     private static final Logger LOGGER = Logger.getLogger(BestellingImpl.class.getName());
 
@@ -86,8 +86,18 @@ public class BestellingImpl implements Bestelling {
         return bestelling.stream().mapToDouble(Product::getPrijs).sum();
     }
 
+    //Extra methods voor de klasse BestellingImplTest.java
     @Override
     public Product get(int i) {
         return bestelling.get(i);
+    }
+
+    @Override
+    public List<Product> getList(int i) {
+        if (i == 1) {
+            return bestelling.stream().sorted(Comparator.comparing(Product::getMerk)).collect(Collectors.toList());
+        } else {
+            return bestelling.stream().sorted(Comparator.comparing(Product::getVolume)).collect(Collectors.toList());
+        }
     }
 }

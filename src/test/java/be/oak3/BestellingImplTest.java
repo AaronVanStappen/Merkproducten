@@ -12,11 +12,10 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
 import static java.util.List.*;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
 import java.util.stream.*;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -44,7 +43,7 @@ public class BestellingImplTest {
     @Test
     public void testLijstVanParfum() {
         assertThat(bestelling.lijstVanParfums()).isNotNull();
-        assertThat(bestelling.lijstVanParfums()).size().isEqualTo(7);
+        assertThat(bestelling.lijstVanParfums()).hasSize(7);
         assertThat(bestelling.lijstVanParfums()).first().isInstanceOf(Parfum.class);
         assertThat(extractProperty("merk").ofType(String.class).from(bestelling.lijstVanParfums()))
                 .contains("Givency").doesNotContain("Sauron", "Elrond");
@@ -53,7 +52,7 @@ public class BestellingImplTest {
     @Test
     public void testLijstVanBepaaldMerk() {
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).isNotNull();
-        assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).size().isEqualTo(3);
+        assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).hasSize(3);
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani")).first().isInstanceOf(Product.class);
         assertThat(bestelling.lijstVanBepaaldMerk("Georgio Armani"))
                 .isEqualTo(bestel2.lijstVanBepaaldMerk("Georgio Armani"));
@@ -65,7 +64,7 @@ public class BestellingImplTest {
     @Test
     public void testLijstVanGoedkopeProducten() {
         assertThat(bestelling.lijstVanGoedkopeProducten()).isNotNull();
-        assertThat(bestelling.lijstVanGoedkopeProducten()).size().isEqualTo(5);
+        assertThat(bestelling.lijstVanGoedkopeProducten()).hasSize(5);
         assertThat(bestelling.lijstVanGoedkopeProducten()).first().isInstanceOf(Product.class);
         assertThat(bestelling.lijstVanGoedkopeProducten())
                 .isEqualTo(bestel2.lijstVanGoedkopeProducten());
@@ -94,5 +93,23 @@ public class BestellingImplTest {
         bestelling.sorteer();
         Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("Light Blue");
+    }
+
+    @Test
+    public void testSorteerOpMerk() {
+        List<Product> producten = bestelling.getList(1);
+        Product p = producten.get(0);
+        assertThat(p.getNaam()).isEqualTo("BLV");
+        assertThat(producten).isSortedAccordingTo(Comparator.comparing(Product::getMerk));
+        assertThat(producten).hasSize(11);
+    }
+
+    @Test
+    public void testSorteerOpVolume() {
+        List<Product> producten = bestelling.getList(2);
+        Product p = producten.get(0);
+        assertThat(p.getNaam()).isEqualTo("Code Donna");
+        assertThat(producten).isSortedAccordingTo(Comparator.comparing(Product::getVolume));
+        assertThat(producten).hasSize(11);
     }
 }

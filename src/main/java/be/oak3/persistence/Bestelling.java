@@ -14,5 +14,7 @@ public interface Bestelling {
     public List<Product> lijstVanGoedkopeProducten();
     public Product zoekDuursteProduct();
     public double totalePrijs();
+    //extra methods voor de klasse BestellingImplTest.java
     public Product get(int i);
+    public List<Product> getList(int i);
 }
