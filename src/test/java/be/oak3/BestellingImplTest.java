@@ -29,6 +29,14 @@ public class BestellingImplTest {
     }
 
     @Test
+    public void testVoegProductToe() {
+        bestelling.voegProductToe(new Parfum(0, "Isay", "L'eau", 100, 95.00));
+        assertThat(bestelling).isNotNull();
+        assertThat(bestelling.totalePrijs()).isEqualTo(674.05);
+        assertThat(bestelling.get(11)).extracting(Product::getMerk).contains("Isay");
+    }
+
+    @Test
     public void testLijstVanParfum() {
         assertThat(bestelling.lijstVanParfums()).isNotNull();
         assertThat(bestelling.lijstVanParfums()).hasSize(7);
@@ -47,6 +55,8 @@ public class BestellingImplTest {
         assertThat(extractProperty("volume").ofType(Integer.class)
                 .from(bestelling.lijstVanBepaaldMerk("Georgio Armani")))
                 .contains(50).doesNotContain(65, 110);
+        assertThat(bestelling.lijstVanBepaaldMerk("BVLGARI"))
+                .extracting(Product::getMerk).containsOnly("BVLGARI");
     }
 
     @Test
@@ -85,19 +95,15 @@ public class BestellingImplTest {
 
     @Test
     public void testSorteerOpMerk() {
-        List<Product> producten = bestelling.getList(1);
-        Product p = producten.get(0);
+        bestelling.sorteerOpMerk();
+        Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("BLV");
-        assertThat(producten).isSortedAccordingTo(Comparator.comparing(Product::getMerk));
-        assertThat(producten).hasSize(11);
     }
 
     @Test
     public void testSorteerOpVolume() {
-        List<Product> producten = bestelling.getList(2);
-        Product p = producten.get(0);
+        bestelling.sorteerOpVolume();
+        Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("Code Donna");
-        assertThat(producten).isSortedAccordingTo(Comparator.comparing(Product::getVolume));
-        assertThat(producten).hasSize(11);
     }
 }

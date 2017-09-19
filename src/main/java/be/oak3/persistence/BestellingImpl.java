@@ -24,19 +24,20 @@ public class BestellingImpl implements Bestelling {
 
     @Override
     public void sorteer() {
-        bestelling.stream().sorted().forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+        //bestelling.stream().sorted().forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+        bestelling.sort(Comparator.comparing(Product::getProductNummer));
     }
 
     @Override
     public void sorteerOpMerk() {
-        bestelling.stream().sorted(Product.sorteerOpMerknaam())
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+        /*bestelling.stream().sorted(Product.sorteerOpMerknaam())
+                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
+        bestelling.sort(Product.sorteerOpMerknaam());
     }
 
     @Override
     public void sorteerOpVolume() {
-        bestelling.stream().sorted(Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode))
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
+        bestelling.sort(Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode));
     }
 
     @Override
@@ -60,7 +61,6 @@ public class BestellingImpl implements Bestelling {
         }
        parfums.stream().sorted(Comparator.comparing(Product::getProductCode))
               .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
-
        return bestelling.stream().filter(p -> p instanceof Parfum)
                  .sorted(Comparator.comparing(Product::getProductCode))
                  .collect(Collectors.toList());
@@ -71,7 +71,6 @@ public class BestellingImpl implements Bestelling {
         /*bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
                   .sorted(Comparator.comparing(Product::getProductCode))
                   .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
-
         return bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
                          .sorted(Comparator.comparing(Product::getProductNummer))
                          .collect(Collectors.toList());
@@ -91,14 +90,5 @@ public class BestellingImpl implements Bestelling {
     @Override
     public Product get(int i) {
         return bestelling.get(i);
-    }
-
-    @Override
-    public List<Product> getList(int i) {
-        if (i == 1) {
-            return bestelling.stream().sorted(Comparator.comparing(Product::getMerk)).collect(Collectors.toList());
-        } else {
-            return bestelling.stream().sorted(Comparator.comparing(Product::getVolume)).collect(Collectors.toList());
-        }
     }
 }

@@ -4,8 +4,6 @@ import be.oak3.model.AfterShave;
 import be.oak3.model.Deodorant;
 import be.oak3.model.Parfum;
 import be.oak3.model.Product;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assertions.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +20,7 @@ public class ProductTest {
 
     @Test
     public void testProduct() {
-        assertThat(parfum.getProductNummer()).isEqualTo(1003);
+        assertThat(parfum.getProductNummer()).isEqualTo(1015);
         assertThat(parfum.getMerk()).isEqualTo("Dolce & Gabana");
         assertThat(parfum.getNaam()).isEqualTo("Li(f)e");
         assertThat(parfum.getVolume()).isEqualTo(100);
