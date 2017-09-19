@@ -14,4 +14,5 @@ public interface Bestelling {
     public List<Product> lijstVanGoedkopeProducten();
     public Product zoekDuursteProduct();
     public double totalePrijs();
+    public Product get(int i);
 }

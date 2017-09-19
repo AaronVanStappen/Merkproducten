@@ -1,6 +1,6 @@
 package be.oak3.model;
 
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -43,8 +43,7 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
     }
 
     public String getProductCode() {
-        return StringUtils.join(getMerk().substring(0,3), getNaam().substring(0,3),
-                           getVolume()).replaceAll(" ", "_")
+        return join(left(merk, 3), left(naam, 3), volume).replaceAll(" ", "_")
                           .toUpperCase();
     }
 

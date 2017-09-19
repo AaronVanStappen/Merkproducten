@@ -31,6 +31,7 @@ public class ProductTest {
 
     @Test
     public void testProductCode() {
+        assertThat(aftershave.getProductCode()).isNotNull();
         assertThat(aftershave.getProductCode()).isEqualTo("CACANA50");
     }
 
