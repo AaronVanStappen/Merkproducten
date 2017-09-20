@@ -2,24 +2,25 @@ package be.oak3.model;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
-public abstract class Product implements Comparator<Product>, Comparable<Product>, Serializable {
+public abstract class Product implements Comparable<Product> {
     private int productNummer;
-    private static int productNr = 1000;
     private String merk;
     private String naam;
     private int volume;
     private double prijs;
 
     public Product(int productNummer, String merk, String naam, int volume, double prijs) {
-        this.productNummer = productNr;
+        this.setProductNummer(productNummer);
         this.merk = merk;
         this.naam = naam;
         this.volume = volume;
         this.prijs = prijs;
-        this.productNr++;
+    }
+
+    public void setProductNummer(int nr) {
+        this.productNummer = nr;
     }
 
     public int getProductNummer() {
@@ -52,28 +53,23 @@ public abstract class Product implements Comparator<Product>, Comparable<Product
     }
 
     @Override
-    public int compare(Product o1, Product o2) {
-        return o1.getMerk().compareTo(o2.getMerk());
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (!(o instanceof Product)) {
             return false;
         }
 
         Product p = (Product) o;
-        return productNummer == p.getProductNummer();
+        return this.productNummer == p.getProductNummer();
     }
 
     @Override
     public int hashCode() {
-        return productNummer;
+        return this.productNummer;
     }
 
     @Override
     public int compareTo(Product p) {
-        return productNummer - p.getProductNummer();
+        return this.getProductNummer() - p.getProductNummer();
     }
 
     @Override

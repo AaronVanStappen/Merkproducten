@@ -11,16 +11,15 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class ProductTest {
-    private Product parfum = new Parfum(0, "Dolce & Gabana", "Li(f)e",
-            100, 78.35D);
-    private Product deo = new Deodorant(0, "Axe", "Ice-Ice Baby",
+    private Parfum parfum  = new Parfum(1000, "Dolce & Gabana", "Li(f)e", 100, 78.35D);
+    private Product deo = new Deodorant(1001, "Axe", "Ice-Ice Baby",
             75, 10.5D, Deodorant.DeoType.STICK);
-    private Product aftershave = new AfterShave(0, "Cacharel", "Anais",
+    private Product aftershave = new AfterShave(1002, "Cacharel", "Anais",
             50, 35.25, AfterShave.Soort.GEL);
 
     @Test
     public void testProduct() {
-        assertThat(parfum.getProductNummer()).isEqualTo(1015);
+        assertThat(parfum.getProductNummer()).isEqualTo(1000);
         assertThat(parfum.getMerk()).isEqualTo("Dolce & Gabana");
         assertThat(parfum.getNaam()).isEqualTo("Li(f)e");
         assertThat(parfum.getVolume()).isEqualTo(100);

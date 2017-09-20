@@ -3,6 +3,7 @@ package be.oak3.persistence;
 import be.oak3.model.Parfum;
 import be.oak3.model.Product;
 
+import com.google.common.collect.Lists;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -13,13 +14,18 @@ import java.util.stream.Collectors;
 
 public class BestellingImpl implements Bestelling {
     private static final Logger LOGGER = Logger.getLogger(BestellingImpl.class.getName());
-    private List<Product> bestelling = new ArrayList<>();
+    private List<Product> bestelling;
+    private  static  int productNr = 1000;
 
-    public BestellingImpl() { }
+    public BestellingImpl() {
+        bestelling = Lists.newArrayList();
+    }
 
     @Override
     public void voegProductToe(Product p) {
+        p.setProductNummer(productNr);
         bestelling.add(p);
+        productNr++;
     }
 
     @Override
