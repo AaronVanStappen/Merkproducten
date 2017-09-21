@@ -8,6 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,28 +31,21 @@ public class BestellingImpl implements Bestelling {
 
     @Override
     public void sorteer() {
-        //bestelling.stream().sorted().forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));
-        bestelling.sort(Comparator.comparing(Product::getProductNummer));
+        Collections.sort(bestelling, Comparator.comparing(Product::getProductNummer));
     }
 
     @Override
     public void sorteerOpMerk() {
-        /*bestelling.stream().sorted(Product.sorteerOpMerknaam())
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
-        bestelling.sort(Product.sorteerOpMerknaam());
+        Collections.sort(bestelling, Product.sorteerOpMerknaam());
     }
 
     @Override
     public void sorteerOpVolume() {
-        bestelling.sort(Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode));
+        Collections.sort(bestelling, Comparator.comparing(Product::getVolume).thenComparing(Product::getProductCode));
     }
 
     @Override
     public List<Product> lijstVanBepaaldMerk(String merk) {
-        /*bestelling.stream().filter(product -> product.getMerk().equals(merk))
-                  .sorted(Comparator.comparing(Product::getProductCode))
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
-
         return bestelling.stream().filter(product -> product.getMerk().equals(merk))
                          .sorted(Comparator.comparing(Product::getProductCode))
                          .collect(Collectors.toList());
@@ -59,14 +53,6 @@ public class BestellingImpl implements Bestelling {
 
    @Override
     public List<Product> lijstVanParfums() {
-        /*List<Product> parfums = new ArrayList<>();
-        for (Product p : bestelling) {
-            if (p instanceof Parfum) {
-                parfums.add(p);
-            }
-        }
-       parfums.stream().sorted(Comparator.comparing(Product::getProductCode))
-              .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
        return bestelling.stream().filter(p -> p instanceof Parfum)
                  .sorted(Comparator.comparing(Product::getProductCode))
                  .collect(Collectors.toList());
@@ -74,9 +60,6 @@ public class BestellingImpl implements Bestelling {
 
     @Override
     public List<Product> lijstVanGoedkopeProducten() {
-        /*bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
-                  .sorted(Comparator.comparing(Product::getProductCode))
-                  .forEach(bestelling -> LOGGER.log(Level.DEBUG,bestelling));*/
         return bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
                          .sorted(Comparator.comparing(Product::getProductNummer))
                          .collect(Collectors.toList());
@@ -96,5 +79,11 @@ public class BestellingImpl implements Bestelling {
     @Override
     public Product get(int i) {
         return bestelling.get(i);
+    }
+
+    //Extra method voor de klasse SwingApp.java
+    @Override
+    public List<Product> getBestelling() {
+        return new ArrayList<>(bestelling);
     }
 }

@@ -16,4 +16,6 @@ public interface Bestelling {
     double totalePrijs();
     //extra method voor de klasse BestellingImplTest.java
     Product get(int i);
+    //extra method voor de klasse SwingApp.java
+    List<Product> getBestelling();
 }

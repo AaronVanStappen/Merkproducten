@@ -7,51 +7,90 @@ import be.oak3.persistence.Data;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class SwingApp extends JFrame {
-    private JLabel lblTitle, lblResultInput, lblResultButton;
     private JList<Product> lstProducts;
-    private JButton btnResult;
+    private JLabel lblResult;
+    private JButton btnSorteer, btnSorteerMerk, btnSorteerVolume, btnPerMerk, btnParfums, btnGoedkoop, btnDuurste, btnTotaal;
+    private Bestelling bestelling;
 
-    public SwingApp() {
+    private SwingApp() {
        initComponents();
        layoutComponents();
        initListeners();
     }
     // nieuwe componenten toevoegen
     private void initComponents() {
-        setTitle("First Swingers' Application");
+        bestelling = new BestellingImpl();
+        setTitle("Merkproducten Application");
         setSize(500, 500);
         setLocation(100, 100);
-        lblTitle = new JLabel("Swingers' Application");
+        List<Product> artikelen = Data.getData();
+        for (Product prod : artikelen) {
+            bestelling.voegProductToe(prod);
+        }
         lstProducts = new JList<>();
-        lstProducts.setListData(Data.getData().toArray(new Product[0]));
-        btnResult = new JButton("Click your brains out!!!");
-        lblResultInput = new JLabel();
-        lblResultButton = new JLabel();
+        lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
+        lblResult = new JLabel();
+        btnSorteer = new JButton("sorteer");
+        btnSorteerMerk = new JButton("sorteer op merk");
+        btnSorteerVolume = new JButton("sorteer op volume");
+        btnPerMerk = new JButton("toon per merk");
+        btnParfums = new JButton("toon de parfums");
+        btnGoedkoop = new JButton("toon goedkoopste producten");
+        btnDuurste = new JButton("toon duurste product");
+        btnTotaal = new JButton("bereken totale prijs");
         setVisible(true);
     }
     // lay-out bepalen
     private void layoutComponents() {
-        add(lblTitle, BorderLayout.NORTH);
+        add(lblResult, BorderLayout.NORTH);
         add(lstProducts, BorderLayout.CENTER);
         JPanel southPanel = new JPanel();
-        southPanel.add(btnResult);
-        southPanel.add(lblResultButton);
-        southPanel.add(lblResultInput);
+        southPanel.add(btnSorteer);
+        southPanel.add(btnSorteerMerk);
+        southPanel.add(btnSorteerVolume);
+        southPanel.add(btnPerMerk);
+        southPanel.add(btnParfums);
+        southPanel.add(btnGoedkoop);
+        southPanel.add(btnDuurste);
+        southPanel.add(btnTotaal);
         add(southPanel, BorderLayout.SOUTH);
+        pack();
     }
     //ActionListeners aanmaken
     private void initListeners() {
-        btnResult.addActionListener(e -> {
-            lblResultButton.setText("ik heb geswingd!!!!");
-            lblResultInput.setText("Swingen is fun");
-
-            lblResultInput.setOpaque(true);
-            lblResultButton.setOpaque(true);
-
-            lblResultInput.setBackground(Color.BLUE);
-            lblResultButton.setBackground(Color.RED);
+        btnSorteer.addActionListener(e -> {
+            bestelling.sorteer();
+            lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
+        });
+        btnSorteerMerk.addActionListener(e -> {
+            bestelling.sorteerOpMerk();
+            lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
+        });
+        btnSorteerVolume.addActionListener(e -> {
+            bestelling.sorteerOpVolume();
+            lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
+        });
+        btnPerMerk.addActionListener(e -> {
+            String merk = JOptionPane.showInputDialog(SwingApp.this, "Merk:");
+            bestelling.lijstVanBepaaldMerk(merk);
+            if (merk != null) {
+                lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
+            }
+        });
+        btnParfums.addActionListener(e -> {
+            lstProducts.setListData(bestelling.lijstVanParfums().toArray(new Product[0]));
+        });
+        btnGoedkoop.addActionListener(e -> {
+            lstProducts.setListData(bestelling.lijstVanGoedkopeProducten().toArray(new Product[0]));
+        });
+        btnDuurste.addActionListener(e -> {
+            lblResult.setText(bestelling.zoekDuursteProduct().toString());
+        });
+        btnTotaal.addActionListener(e -> {
+            lblResult.setText(String.valueOf(bestelling.totalePrijs()));
         });
     }
 
