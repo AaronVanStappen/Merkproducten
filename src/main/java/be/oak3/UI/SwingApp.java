@@ -74,11 +74,8 @@ public class SwingApp extends JFrame {
             lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
         });
         btnPerMerk.addActionListener(e -> {
-            String merk = JOptionPane.showInputDialog(SwingApp.this, "Merk:");
-            bestelling.lijstVanBepaaldMerk(merk);
-            if (merk != null) {
-                lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
-            }
+            String merk = JOptionPane.showInputDialog("Geef een merk op:");
+            lstProducts.setListData(bestelling.lijstVanBepaaldMerk(merk).toArray(new Product[0]));
         });
         btnParfums.addActionListener(e -> {
             lstProducts.setListData(bestelling.lijstVanParfums().toArray(new Product[0]));
