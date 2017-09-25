@@ -1,5 +1,6 @@
 package be.oak3;
 
+import be.oak3.model.Deodorant;
 import be.oak3.model.Parfum;
 import be.oak3.model.Product;
 import be.oak3.persistence.Bestelling;
@@ -63,7 +64,7 @@ public class BestellingImplTest {
     public void testLijstVanGoedkopeProducten() {
         assertThat(bestelling.lijstVanGoedkopeProducten()).isNotNull();
         assertThat(bestelling.lijstVanGoedkopeProducten()).hasSize(5);
-        assertThat(bestelling.lijstVanGoedkopeProducten()).first().isInstanceOf(Product.class);
+        assertThat(bestelling.lijstVanGoedkopeProducten()).first().isInstanceOf(Deodorant.class);
         assertThat(bestelling.lijstVanGoedkopeProducten())
                 .isEqualTo(bestel2.lijstVanGoedkopeProducten());
         //assertThat(extractProperty("productNummer").ofType(Integer.class)
@@ -91,6 +92,7 @@ public class BestellingImplTest {
         bestelling.sorteer();
         Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("Light Blue");
+        assertThat(p.getMerk()).isEqualTo("Dolce & Gabbana");
     }
 
     @Test
@@ -98,6 +100,7 @@ public class BestellingImplTest {
         bestelling.sorteerOpMerk();
         Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("BLV");
+        assertThat(p.getMerk()).isEqualTo("BVLGARI");
     }
 
     @Test
@@ -105,5 +108,6 @@ public class BestellingImplTest {
         bestelling.sorteerOpVolume();
         Product p = bestelling.get(0);
         assertThat(p.getNaam()).isEqualTo("Code Donna");
+        assertThat(p.getVolume()).isEqualTo(30);
     }
 }

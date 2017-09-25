@@ -14,12 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BestellingImpl implements Bestelling {
-    private static final Logger LOGGER = Logger.getLogger(BestellingImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BestellingImpl.class);
     private List<Product> bestelling;
     private  static  int productNr = 1000;
 
     public BestellingImpl() {
         bestelling = Lists.newArrayList();
+        for (Product product : Data.getData()) {
+            voegProductToe(product);
+        }
     }
 
     @Override

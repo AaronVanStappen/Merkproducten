@@ -3,6 +3,7 @@ package be.oak3.UI;
 import be.oak3.model.Product;
 import be.oak3.persistence.Bestelling;
 import be.oak3.persistence.BestellingImpl;
+import be.oak3.persistence.BestellingImplDao;
 import be.oak3.persistence.Data;
 
 import javax.swing.*;
@@ -22,15 +23,12 @@ public class SwingApp extends JFrame {
     }
     // nieuwe componenten toevoegen
     private void initComponents() {
-        bestelling = new BestellingImpl();
+        bestelling = new BestellingImplDao();
         setTitle("Merkproducten Application");
         setSize(500, 500);
         setLocation(100, 100);
-        List<Product> artikelen = Data.getData();
-        for (Product prod : artikelen) {
-            bestelling.voegProductToe(prod);
-        }
         lstProducts = new JList<>();
+        bestelling.sorteer();
         lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
         lblResult = new JLabel();
         btnSorteer = new JButton("sorteer");
@@ -59,7 +57,7 @@ public class SwingApp extends JFrame {
         add(southPanel, BorderLayout.SOUTH);
         pack();
     }
-    //ActionListeners aanmaken
+    // ActionListeners aanmaken
     private void initListeners() {
         btnSorteer.addActionListener(e -> {
             bestelling.sorteer();
@@ -67,6 +65,7 @@ public class SwingApp extends JFrame {
         });
         btnSorteerMerk.addActionListener(e -> {
             bestelling.sorteerOpMerk();
+            bestelling.getBestelling().forEach(System.out::println);
             lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
         });
         btnSorteerVolume.addActionListener(e -> {
