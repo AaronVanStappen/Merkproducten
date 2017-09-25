@@ -86,9 +86,11 @@ public class SwingApp extends JFrame {
                     bestelling.voegProductToe(new Deodorant(0, merk, naam, volume, prijs,
                             type.equalsIgnoreCase(Deodorant.DeoType.VAPO.name()) ? Deodorant.DeoType.VAPO : Deodorant.DeoType.STICK));
                     break;
-                default:
+                case "parfum":
                     bestelling.voegProductToe(new Parfum(0, merk, naam, volume, prijs));
                     break;
+                default:
+                    JOptionPane.showMessageDialog(null, "geen juiste invoer");
             }
             lstProducts.setListData(bestelling.getBestelling().toArray(new Product[0]));
         });
