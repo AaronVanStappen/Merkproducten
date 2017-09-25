@@ -6,6 +6,7 @@ import be.oak3.model.Parfum;
 import be.oak3.model.Product;
 import com.google.common.collect.Lists;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,72 +16,38 @@ public class BestellingImplDao implements Bestelling {
     private static final String URL = "jdbc:mysql://localhost/merkproducten?useSSL=false";
     private static final String USER = "cursist";
     private static final String PASSWORD = "12345";
-    private  List<Product> bestelling;
-    private int prodNr;
-    private String hetMerk;
-    private String naam;
-    private int volume;
-    private float prijs;
-    private String prodCode;
-    private int soort;
-    private int type;
+    private List<Product> bestelling;
 
     public BestellingImplDao() {
-        bestelling = new ArrayList<>(); }
+        bestelling = new ArrayList<>();
+    }
 
     @Override
     public void voegProductToe(Product product) {
-        String addProduct = "insert into beers (prod_code, merk, naam, volume, prijs, soort_id, type_id) " +
-                "values (?, ?, ?, ?, ?, ?, ?);";
+        String addProduct = "insert into producten (prod_nr, prod_code, merk, naam, volume, prijs, soort_id, type_id) " +
+                "values (null, ?, ?, ?, ?, ?, ?, ?);";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(addProduct)) {
-            switch (product.getClass().getName()) {
-                case "Aftershave":
-                    if (AfterShave.Soort.VAPO.toString() == "VAPO") {
-                        stmt.setString(1, product.getProductCode());
-                        stmt.setString(2, product.getMerk());
-                        stmt.setString(3, product.getNaam());
-                        stmt.setInt(4, product.getVolume());
-                        stmt.setDouble(5, product.getPrijs());
-                        stmt.setInt(6, 1);
-                        stmt.setInt(7, 1);
-                    } else {
-                        stmt.setString(1, product.getProductCode());
-                        stmt.setString(2, product.getMerk());
-                        stmt.setString(3, product.getNaam());
-                        stmt.setInt(4, product.getVolume());
-                        stmt.setDouble(5, product.getPrijs());
-                        stmt.setInt(6, 1);
-                        stmt.setInt(7, 3);
-                    }
-                case "Deodorant":
-                    if (Deodorant.DeoType.VAPO.toString() == "VAPO") {
-                        stmt.setString(1, product.getProductCode());
-                        stmt.setString(2, product.getMerk());
-                        stmt.setString(3, product.getNaam());
-                        stmt.setInt(4, product.getVolume());
-                        stmt.setDouble(5, product.getPrijs());
-                        stmt.setInt(6, 2);
-                        stmt.setInt(7, 1);
-                    } else {
-                        stmt.setString(1, product.getProductCode());
-                        stmt.setString(2, product.getMerk());
-                        stmt.setString(3, product.getNaam());
-                        stmt.setInt(4, product.getVolume());
-                        stmt.setDouble(5, product.getPrijs());
-                        stmt.setInt(6, 2);
-                        stmt.setInt(7, 2);
-                    }
-                default:
-                    stmt.setString(1, product.getProductCode());
-                    stmt.setString(2, product.getMerk());
-                    stmt.setString(3, product.getNaam());
-                    stmt.setInt(4, product.getVolume());
-                    stmt.setDouble(5, product.getPrijs());
-                    stmt.setInt(6, 3);
+            stmt.setString(1, product.getProductCode());
+            stmt.setString(2, product.getMerk());
+            stmt.setString(3, product.getNaam());
+            stmt.setInt(4, product.getVolume());
+            stmt.setDouble(5, product.getPrijs());
+            if (product instanceof AfterShave) {
+                AfterShave a = (AfterShave) product;
+                stmt.setInt(6, 1);
+                stmt.setInt(7, a.getSoort().toString().equalsIgnoreCase("vapo") ? 1 : 3);
+            } else if (product instanceof Deodorant) {
+                Deodorant d = (Deodorant) product;
+                stmt.setInt(6, 2);
+                stmt.setInt(7, d.getSoort().toString().equalsIgnoreCase("vapo") ? 1 : 2);
+            } else {
+                stmt.setInt(6, 3);
+                stmt.setNull(7, Types.INTEGER);
             }
-
+            int i = stmt.executeUpdate();
+            System.out.println(i);
         } catch (SQLException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -104,7 +71,7 @@ public class BestellingImplDao implements Bestelling {
 
     @Override
     public List<Product> lijstVanBepaaldMerk(String merk) {
-        String merkLijst = "select * from producten where merk=" + merk;
+        String merkLijst = "select * from producten where merk='" + merk + "'";
         addToList(merkLijst);
         return bestelling;
     }
@@ -133,11 +100,11 @@ public class BestellingImplDao implements Bestelling {
     @Override
     public double totalePrijs() {
         double totale_prijs = 0;
-        String query = "select count(prijs) as totale_prijs from producten;";
+        String query = "select sum(prijs) as totale_prijs from producten;";
         try (Connection con = getConnection(); Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY)) {
             try (ResultSet rs = stmt.executeQuery(query)) {
-                while (rs.next()){
+                while (rs.next()) {
                     totale_prijs = rs.getDouble("totale_prijs");
                 }
             }
@@ -149,29 +116,30 @@ public class BestellingImplDao implements Bestelling {
 
     @Override
     public Product get(int index) {
-        String get = "select * from producten where prod_nr=" +index;
+        String get = "select * from producten where prod_nr=" + index;
         addToList(get);
         return bestelling.stream().findFirst().get();
     }
 
     @Override
     public List<Product> getBestelling() {
-        return addToList("selec*from producten");
+        return bestelling;
     }
 
     private List<Product> addToList(String query) {
+        bestelling.clear();
         try (Connection con = getConnection(); Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY)) {
             try (ResultSet rs = stmt.executeQuery(query)) {
-                while (rs.next()){
-                    prodNr = rs.getInt("prod_nr");
-                    hetMerk = rs.getString("merk");
-                    naam = rs.getString("naam");
-                    volume = rs.getInt("volume");
-                    prijs = rs.getFloat("prijs");
-                    soort = rs.getInt("soort_id");
-                    prodCode = rs.getString("prod_code");
-                    type = rs.getInt("type_id");
+                while (rs.next()) {
+                    int prodNr = rs.getInt("prod_nr");
+                    String hetMerk = rs.getString("merk");
+                    String naam = rs.getString("naam");
+                    int volume = rs.getInt("volume");
+                    float prijs = rs.getFloat("prijs");
+                    int soort = rs.getInt("soort_id");
+                    String prodCode = rs.getString("prod_code");
+                    int type = rs.getInt("type_id");
                     switch (soort) {
                         case 1:
                             if (type == 1) {
@@ -199,13 +167,7 @@ public class BestellingImplDao implements Bestelling {
         return bestelling;
     }
 
-    private static  Connection getConnection() throws SQLException{
-        return DriverManager.getConnection(URL, USER ,PASSWORD);
-    }
-
-    public static void main(String[] args) {
-        Bestelling b = new BestellingImplDao();
-        b.sorteerOpMerk();
-        b.getBestelling().forEach(System.out::println);
+    private static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }

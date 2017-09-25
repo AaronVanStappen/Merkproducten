@@ -16,13 +16,10 @@ import java.util.stream.Collectors;
 public class BestellingImpl implements Bestelling {
     private static final Logger LOGGER = Logger.getLogger(BestellingImpl.class);
     private List<Product> bestelling;
-    private  static  int productNr = 1000;
+    private static int productNr = 1000;
 
     public BestellingImpl() {
         bestelling = Lists.newArrayList();
-        for (Product product : Data.getData()) {
-            voegProductToe(product);
-        }
     }
 
     @Override
@@ -50,22 +47,22 @@ public class BestellingImpl implements Bestelling {
     @Override
     public List<Product> lijstVanBepaaldMerk(String merk) {
         return bestelling.stream().filter(product -> product.getMerk().equals(merk))
-                         .sorted(Comparator.comparing(Product::getProductCode))
-                         .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Product::getProductCode))
+                .collect(Collectors.toList());
     }
 
-   @Override
+    @Override
     public List<Product> lijstVanParfums() {
-       return bestelling.stream().filter(p -> p instanceof Parfum)
-                 .sorted(Comparator.comparing(Product::getProductCode))
-                 .collect(Collectors.toList());
+        return bestelling.stream().filter(p -> p instanceof Parfum)
+                .sorted(Comparator.comparing(Product::getProductCode))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Product> lijstVanGoedkopeProducten() {
         return bestelling.stream().filter(product -> product.getPrijs() <= 50.00D)
-                         .sorted(Comparator.comparing(Product::getProductNummer))
-                         .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Product::getProductNummer))
+                .collect(Collectors.toList());
     }
 
     @Override

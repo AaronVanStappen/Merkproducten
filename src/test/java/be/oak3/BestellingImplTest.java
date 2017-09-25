@@ -6,9 +6,12 @@ import be.oak3.model.Product;
 import be.oak3.persistence.Bestelling;
 import be.oak3.persistence.BestellingImpl;
 import be.oak3.persistence.Data;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.*;
+
 import java.util.*;
 
 public class BestellingImplTest {
@@ -68,8 +71,8 @@ public class BestellingImplTest {
         assertThat(bestelling.lijstVanGoedkopeProducten())
                 .isEqualTo(bestel2.lijstVanGoedkopeProducten());
         //assertThat(extractProperty("productNummer").ofType(Integer.class)
-                //.from(bestelling.lijstVanGoedkopeProducten()))
-                //.contains(1002, 1010, 1007).doesNotContain(1003, 1006);
+        //.from(bestelling.lijstVanGoedkopeProducten()))
+        //.contains(1002, 1010, 1007).doesNotContain(1003, 1006);
     }
 
     @Test

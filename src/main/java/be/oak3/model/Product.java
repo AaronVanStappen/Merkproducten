@@ -45,7 +45,7 @@ public abstract class Product implements Comparable<Product> {
 
     public String getProductCode() {
         return join(left(merk, 3), left(naam, 3), volume).replaceAll(" ", "_")
-                          .toUpperCase();
+                .toUpperCase();
     }
 
     public static Comparator<Product> sorteerOpMerknaam() {
@@ -69,13 +69,14 @@ public abstract class Product implements Comparable<Product> {
 
     @Override
     public int compareTo(Product p) {
-        return this.getProductNummer() - p.getProductNummer();
+        //if (p != null)
+            return this.getProductNummer() - p.getProductNummer();
     }
 
     @Override
     public String toString() {
         return String.format("%d %s %-20s %10s %-24s %10s %3sml %8s %4.2f %5s %s",
                 getProductNummer(), "Merk:", getMerk(), "Naam:", getNaam(), "Volume:", getVolume(),
-                "Prijs:", getPrijs(), "Code:", getProductCode()) + "\n";
+                "Prijs:", getPrijs(), "Code:", getProductCode());
     }
 }
