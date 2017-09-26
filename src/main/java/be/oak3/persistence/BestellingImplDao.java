@@ -126,7 +126,7 @@ public class BestellingImplDao implements Bestelling {
         return bestelling;
     }
 
-    private List<Product> addToList(String query) {
+    private void addToList(String query) {
         bestelling.clear();
         try (Connection con = getConnection(); Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_READ_ONLY)) {
@@ -164,7 +164,6 @@ public class BestellingImplDao implements Bestelling {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return bestelling;
     }
 
     private static Connection getConnection() throws SQLException {
